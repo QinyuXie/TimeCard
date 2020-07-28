@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'TimeCardSystem.apps.TimecardsystemConfig',
+    'TimeCardDemo.apps.TimecarddemoConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -52,10 +53,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'TimeCard.urls'
 
+# Add for react
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/app_react/build/static')
+]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/app_react/build')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
