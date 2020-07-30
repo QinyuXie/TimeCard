@@ -18,8 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+
 urlpatterns = [
-    path('demo/', include('TimeCardDemo.urls')),
+    url(r'client/', TemplateView.as_view(template_name='index.html')),
+    url(r'api/', include('TimeCardDemo.urls')),
     path('admin/', admin.site.urls),
-    url(r'^$', TemplateView.as_view(template_name='index.html')),
 ]

@@ -1,30 +1,52 @@
-import {Breadcrumb, Layout, Menu} from 'antd';
+import {Col, Layout, Row, Tabs} from 'antd';
 import React, {Component} from "react";
 import './mainPage.css'
+import TimeClockCard from "./timeclock";
+import InfiniteListExample from "./shift-list";
+import OverViewTab from "./overview";
+
+const {TabPane} = Tabs;
+
+function callback(key) {
+    console.log(key);
+}
 
 const {Header, Content, Footer} = Layout;
+
+const DataTabs = () => (
+    <Tabs defaultActiveKey="1" onChange={callback}>
+        <TabPane tab="Overview" key="1">
+            <OverViewTab/>
+        </TabPane>
+        <TabPane tab="Timesheets" key="2">
+            <InfiniteListExample/>
+        </TabPane>
+
+    </Tabs>
+)
 
 export default class MainPage extends Component {
     render() {
         return (
-            <Layout className={"main"}>
+            <Layout className={"main-page"}>
                 <Header>
-                    <div className="logo"/>
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                        <Menu.Item key="1">nav 1</Menu.Item>
-                        <Menu.Item key="2">nav 2</Menu.Item>
-                        <Menu.Item key="3">nav 3</Menu.Item>
-                    </Menu>
+                    {/*<div className="logo"/>*/}
+                    {/*<Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>*/}
+                    {/*    <Menu.Item key="1">nav 1</Menu.Item>*/}
+                    {/*    <Menu.Item key="2">nav 2</Menu.Item>*/}
+                    {/*    <Menu.Item key="3">nav 3</Menu.Item>*/}
+                    {/*</Menu>*/}
                 </Header>
-                <Content style={{padding: '0 50px'}}>
-                    <Breadcrumb style={{margin: '16px 0'}}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
-                    </Breadcrumb>
-                    <div className="site-layout-content">Content</div>
+                <Content style={{padding: '5% 5%'}}>
+                    <Row gutter={32}>
+                        <Col xs={24} xl={8}>
+                            <div className='time-clock-card'><TimeClockCard/></div>
+                        </Col>
+                        <Col xs={24} xl={16}>
+                            <div className="site-layout-content"><DataTabs/></div>
+                        </Col>
+                    </Row>
                 </Content>
-                {/*<Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>*/}
             </Layout>
         )
     }

@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class TimecarddemoConfig(AppConfig):
+class TimeCardDemoConfig(AppConfig):
     name = 'TimeCardDemo'

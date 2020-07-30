@@ -1,10 +1,15 @@
 import {Button, Checkbox, Form, Input} from 'antd';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
-
+import {get} from "../../utils/request"
 import React from "react";
 
 const login_form_style = {
     "max-width": "300px",
+}
+
+
+const handleClick = () => {
+    console.log(get("/api/employees/"));
 }
 
 const NormalLoginForm = () => {
@@ -64,7 +69,7 @@ const NormalLoginForm = () => {
             </Form.Item>
 
             <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button">
+                <Button type="primary" htmlType="submit" className="login-form-button" onClick={handleClick}>
                     Log in
                 </Button>
                 Or <a href="/register">register now!</a>

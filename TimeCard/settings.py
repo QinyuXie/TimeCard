@@ -37,13 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'TimeCardDemo.apps.TimecarddemoConfig',
+
+    'TimeCardDemo.apps.TimeCardDemoConfig',
     'rest_framework'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -121,8 +123,34 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#
+# # Add for Cors Headers
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ORIGIN_WHITELIST = str("localhost:3000")
+#
+# CORS_ALLOW_METHODS = {
+#     'DELETE',
+#     'GET',
+#     'OPTIONS',
+#     'PATCH',
+#     'POST',
+#     'PUT',
+#     'VIEW'
+# }
+#
+# CORS_ALLOW_HEADERS = (
+#     'accept',
+#     'accept-encoding',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-crsftoken',
+#     'x-requested-with',
+# )

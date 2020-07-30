@@ -1,11 +1,20 @@
-from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
 
-from .models import User
-from .serializers import UserSerializer
+from .models import Employee, TimeEntry
+from .serializers import EmployeeSerializer, TimeEntrySerializer
 
 
-# Create your views here.
+class EmployeeViewSet(ModelViewSet):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+    #
+    # def get_serializer_class(self):
+    #     # 重写get_serializer_class方法
+    #     if self.action == 'list':
+    #         return EmployeeSerializer
+    #     return CourseDetailSerializer
 
-class UserListCreate(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+
+class TimeEntryViewSet(ModelViewSet):
+    queryset = TimeEntry.objects.all()
+    serializer_class = TimeEntrySerializer

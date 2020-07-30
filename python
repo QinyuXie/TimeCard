@@ -1,0 +1,4 @@
+Operations to perform:
+  Apply all migrations: TimeCardDemo, admin, auth, contenttypes, sessions
+Running migrations:
+  No migrations to apply.

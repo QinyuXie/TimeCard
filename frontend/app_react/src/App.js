@@ -1,20 +1,9 @@
 import React, {Component} from "react";
 import {Redirect, Route, Switch} from "react-router-dom";
-import {Layout} from 'antd';
 import LoginPage from "./pages/login/loginPage";
 import './App.css';
 import MainPage from "./pages/main/mainPage";
-
-const {Header, Content, Sider} = Layout;
-
-const LayoutCss = {
-    height: "100%",
-    width: "auto"
-}
-const layoutBackground = {
-    background: "#fff",
-}
-
+import AdminPage from "./pages/admin/adminPage";
 
 export default class App extends Component {
 
@@ -27,6 +16,7 @@ export default class App extends Component {
                 {/*    <Route path="/login"><LoginPage /></Route>*/}
                 {/*)}*/}
                 <Route path="/main"><MainPage/></Route>
+                <Route path="/admin"><AdminPage/></Route>
                 <Route path="/"><LoginPage/></Route>
                 <Redirect to="/404"/>
             </Switch>
