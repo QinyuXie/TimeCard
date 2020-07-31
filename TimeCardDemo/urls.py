@@ -6,7 +6,7 @@ from . import views
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'employees', views.EmployeeViewSet)
+router.register(r'employees', views.EmployeeViewSet, basename='employees')
 router.register(r'time_entry', views.TimeEntryViewSet)
 
 urlpatterns = [

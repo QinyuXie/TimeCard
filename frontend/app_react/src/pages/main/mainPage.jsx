@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import './mainPage.css'
 import TimeClockCard from "./timeclock";
 import InfiniteListExample from "./shift-list";
-import OverViewTab from "./overview";
+import Card from "antd/es/card";
 
 const {TabPane} = Tabs;
 
@@ -14,15 +14,9 @@ function callback(key) {
 const {Header, Content, Footer} = Layout;
 
 const DataTabs = () => (
-    <Tabs defaultActiveKey="1" onChange={callback}>
-        <TabPane tab="Overview" key="1">
-            <OverViewTab/>
-        </TabPane>
-        <TabPane tab="Timesheets" key="2">
-            <InfiniteListExample/>
-        </TabPane>
-
-    </Tabs>
+    <Card title="Time Sheets">
+        <InfiniteListExample/>
+    </Card>
 )
 
 export default class MainPage extends Component {

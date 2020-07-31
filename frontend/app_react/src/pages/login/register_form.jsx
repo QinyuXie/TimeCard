@@ -1,44 +1,11 @@
 import React, {useState} from 'react';
-import {AutoComplete, Button, Checkbox, Form, Input, Select, Tooltip,} from 'antd';
-import {QuestionCircleOutlined} from '@ant-design/icons';
+import {AutoComplete, Button, Checkbox, Form, Input, message, Select,} from 'antd';
+
+import {loginServer, registerServer} from "../../api/server";
+import {withRouter} from "react-router";
 
 const {Option} = Select;
 const AutoCompleteOption = AutoComplete.Option;
-
-const residences = [
-    {
-        value: 'zhejiang',
-        label: 'Zhejiang',
-        children: [
-            {
-                value: 'hangzhou',
-                label: 'Hangzhou',
-                children: [
-                    {
-                        value: 'xihu',
-                        label: 'West Lake',
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        value: 'jiangsu',
-        label: 'Jiangsu',
-        children: [
-            {
-                value: 'nanjing',
-                label: 'Nanjing',
-                children: [
-                    {
-                        value: 'zhonghuamen',
-                        label: 'Zhong Hua Men',
-                    },
-                ],
-            },
-        ],
-    },
-];
 
 const formItemLayout = {
     labelCol: {
@@ -63,18 +30,46 @@ const tailFormItemLayout = {
     },
 };
 
-const RegistrationForm = () => {
+const RegistrationForm = (props) => {
     const [form] = Form.useForm();
 
     const onFinish = values => {
-        console.log('Received values of form: ', values);
+        // console.log('Received values of form: ', values);
+        const new_employee = {
+            username: values.username,
+            first_name: values.first_name,
+            last_name: values.last_name,
+            email: values.email,
+            phone: values.phone,
+            password: values.password
+        }
+        registerServer(new_employee).then(function (res) {
+            if (!res['success']) {
+                message.error(res['mess']);
+            } else {
+                message.success("Congradulation! You have registered successfully!");
+                const data = {
+                    username: values.username,
+                    password: values.password
+                }
+
+                loginServer(data).then(function (response) {
+                    const data = response.data;
+                    if (!data['success']) {
+                        console.log("failed")
+                    } else {
+                        console.log("success")
+                        props.history.push('/main')
+                    }
+                })
+            }
+        })
     };
 
     const prefixSelector = (
         <Form.Item name="prefix" noStyle>
             <Select style={{width: 70}}>
-                <Option value="86">+1</Option>
-                <Option value="87">+87</Option>
+                <Option value="1">+1</Option>
             </Select>
         </Form.Item>
     );
@@ -101,8 +96,7 @@ const RegistrationForm = () => {
             name="register"
             onFinish={onFinish}
             initialValues={{
-                residence: ['zhejiang', 'hangzhou', 'xihu'],
-                prefix: '86',
+                prefix: '1',
             }}
             scrollToFirstError
         >
@@ -110,6 +104,22 @@ const RegistrationForm = () => {
                 name="username"
                 label="Username"
                 rules={[{required: true, message: 'Please input your username!', whitespace: true}]}
+            >
+                <Input/>
+            </Form.Item>
+
+            <Form.Item
+                name="first_name"
+                label="First Name"
+                rules={[{required: true, message: 'Please input your first name!', whitespace: true}]}
+            >
+                <Input/>
+            </Form.Item>
+
+            <Form.Item
+                name="last_name"
+                label="Last Name"
+                rules={[{required: true, message: 'Please input your last name!', whitespace: true}]}
             >
                 <Input/>
             </Form.Item>
@@ -139,6 +149,8 @@ const RegistrationForm = () => {
                         required: true,
                         message: 'Please input your password!',
                     },
+                    {min: 4, message: 'Username must contains at least 4 characters'},
+                    {max: 12, message: 'Username must contains at most 12 characters'},
                 ]}
                 hasFeedback
             >
@@ -168,20 +180,20 @@ const RegistrationForm = () => {
                 <Input.Password/>
             </Form.Item>
 
-            <Form.Item
-                name="nickname"
-                label={
-                    <span>
-            Nickname&nbsp;
-                        <Tooltip title="What do you want others to call you?">
-              <QuestionCircleOutlined/>
-            </Tooltip>
-          </span>
-                }
-                rules={[{required: true, message: 'Please input your nickname!', whitespace: true}]}
-            >
-                <Input/>
-            </Form.Item>
+            {/*  <Form.Item*/}
+            {/*      name="nickname"*/}
+            {/*      label={*/}
+            {/*          <span>*/}
+            {/*  Nickname&nbsp;*/}
+            {/*              <Tooltip title="What do you want others to call you?">*/}
+            {/*    <QuestionCircleOutlined/>*/}
+            {/*  </Tooltip>*/}
+            {/*</span>*/}
+            {/*      }*/}
+            {/*      rules={[{required: true, message: 'Please input your nickname!', whitespace: true}]}*/}
+            {/*  >*/}
+            {/*      <Input/>*/}
+            {/*  </Form.Item>*/}
 
             {/*<Form.Item*/}
             {/*  name="residence"*/}
@@ -249,4 +261,4 @@ const RegistrationForm = () => {
     );
 };
 
-export default RegistrationForm;
+export default withRouter(RegistrationForm);

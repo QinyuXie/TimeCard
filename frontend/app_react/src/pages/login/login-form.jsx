@@ -1,21 +1,37 @@
-import {Button, Checkbox, Form, Input} from 'antd';
+import {Button, Checkbox, Form, Input, message} from 'antd';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
-import {get} from "../../utils/request"
 import React from "react";
+import {loginServer} from "../../api/server";
+import {withRouter} from 'react-router-dom';
 
 const login_form_style = {
-    "max-width": "300px",
-}
+    maxWidth: "300px",
+};
 
+const NormalLoginForm = (props) => {
+    // const {history, location, match} = this.props
+    const onFinish = async values => {
+        // \\console.log('Received values of form: ', values);
+        // console.log(props);
+        const data = {
+            username: values.username,
+            password: values.password
+        }
 
-const handleClick = () => {
-    console.log(get("/api/employees/"));
-}
-
-const NormalLoginForm = () => {
-
-    const onFinish = values => {
-        console.log('Received values of form: ', values);
+        const res = await loginServer(data).then(function (response) {
+            const data = response.data;
+            console.log(data);
+            return data;
+        })
+        console.log(res);
+        if (!res['success']) {
+            console.log("failed")
+            message.error('Login failed, please try again.')
+        } else {
+            props.history.push('/main')
+            console.log("logined successfully")
+            message.success("Login successfully!")
+        }
     };
 
     const onFinishFailed = errorInfo => {
@@ -69,7 +85,7 @@ const NormalLoginForm = () => {
             </Form.Item>
 
             <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button" onClick={handleClick}>
+                <Button type="primary" htmlType="submit" className="login-form-button">
                     Log in
                 </Button>
                 Or <a href="/register">register now!</a>
@@ -78,4 +94,4 @@ const NormalLoginForm = () => {
     );
 };
 
-export default NormalLoginForm;
+export default withRouter(NormalLoginForm);

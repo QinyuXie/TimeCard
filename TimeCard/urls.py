@@ -16,11 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
-
 
 urlpatterns = [
-    url(r'client/', TemplateView.as_view(template_name='index.html')),
+    # url(r'^$', TemplateView.as_view(template_name='index.html')),
     url(r'api/', include('TimeCardDemo.urls')),
     path('admin/', admin.site.urls),
 ]

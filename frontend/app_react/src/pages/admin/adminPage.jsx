@@ -3,7 +3,6 @@ import './adminPage.css'
 import {Breadcrumb, Layout, Menu} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import {Link, Route, Switch} from "react-router-dom";
-import CouponPage from "../coupon/CouponPage";
 
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
@@ -55,8 +54,8 @@ const BasicLayout = () => {
                         }}
                     >
                         <Switch>
-                            <Route path='/admin/members'><CouponPage/></Route>
-                            <Route path='/admin/approval'><CouponPage/></Route>
+                            <Route path='/admin/members'></Route>
+                            <Route path='/admin/approval'></Route>
                             <Route path="/admin/payroll"></Route>
                         </Switch>
                     </Content>

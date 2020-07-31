@@ -1,8 +1,10 @@
-import {List, message, Spin} from 'antd';
-import reqwest from 'reqwest'
+import {Button, Col, List, message, Row, Statistic} from 'antd';
 import React from "react";
 
 import InfiniteScroll from 'react-infinite-scroller';
+import {get_all_entry} from "../../api/time_entry";
+import {withRouter} from "react-router";
+import moment from "moment";
 
 const infinite_container = {
     border: '1px solid #e8e8e8',
@@ -21,88 +23,118 @@ const loading_container = {
 
 const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo';
 
-export default class InfiniteListExample extends React.Component {
-    state = {
-        data: [],
-        loading: false,
-        hasMore: true,
-    };
-
-    componentDidMount() {
-        this.fetchData(res => {
-            this.setState({
-                data: res.results,
-            });
-        });
+class InfiniteListExample extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: [],
+            loading: false,
+            hasMore: true,
+        };
     }
 
-    fetchData = callback => {
-        reqwest({
-            url: fakeDataUrl,
-            type: 'json',
-            method: 'get',
-            contentType: 'application/json',
-            success: res => {
-                callback(res);
-            },
+
+    async componentDidMount() {
+        let res = await get_all_entry(localStorage.getItem('employee_id')).then(function (res) {
+            // console.log(res);
+            return res;
+        });
+        // console.log(res);
+        if (res['success']) {
+            this.setState({
+                data: res['data'],
+            });
+        } else {
+            message.error(res['ess']);
+            this.props.history.push('/login');
+        }
+    }
+
+    fetchData = async () => {
+        let res = await get_all_entry(localStorage.getItem('employee_id')).then(function (res) {
+            // console.log(res);
+            return res;
+        });
+        this.setState({
+            data: res['data'],
         });
     };
 
-    handleInfiniteOnLoad = () => {
-        let {data} = this.state;
-        this.setState({
-            loading: true,
-        });
-        if (data.length > 14) {
-            message.warning('Infinite List loaded all');
-            this.setState({
-                hasMore: false,
-                loading: false,
-            });
-            return;
-        }
-        this.fetchData(res => {
-            data = data.concat(res.results);
-            this.setState({
-                data,
-                loading: false,
-            });
-        });
-    };
+    // handleInfiniteOnLoad = () => {
+    //     let {data} = this.state;
+    //     // this.setState({
+    //     //     loading: true,
+    //     // });
+    //     // if (data.length > 14) {
+    //     //     message.warning('Infinite List loaded all');
+    //     //     this.setState({
+    //     //         hasMore: false,
+    //     //         loading: false,
+    //     //     });
+    //     //     return;
+    //     // }
+    //     this.fetchData(res => {
+    //         // data = data.concat(res.results);
+    //         this.setState({
+    //             data,
+    //             loading: false,
+    //         });
+    //     });
+    // };
 
     render() {
         return (
-            <div style={infinite_container}>
-                <InfiniteScroll
-                    initialLoad={false}
-                    pageStart={0}
-                    loadMore={this.handleInfiniteOnLoad}
-                    hasMore={!this.state.loading && this.state.hasMore}
-                    useWindow={false}
-                >
-                    <List
-                        dataSource={this.state.data}
-                        renderItem={item => (
-                            <List.Item key={item.id}
-                                       actions={[<a key="list-loadmore-edit">edit</a>,
-                                           <a key="list-loadmore-more">more</a>]}
-                            >
-                                <List.Item.Meta
-                                    title={<a href="https://ant.design">{item.name.last}</a>}
-                                    description={item.email}
-                                />
-                                <div>Content</div>
-                            </List.Item>
-                        )}
+            <div>
+                <div style={infinite_container}>
+                    <InfiniteScroll
+                        initialLoad={false}
+                        pageStart={0}
+                        // loadMore={this.handleInfiniteOnLoad}
+                        // hasMore={!this.state.loading && this.state.hasMore}
+                        useWindow={false}
                     >
-                        {this.state.loading && this.state.hasMore && (
-                            <div style={loading_container}>
-                                <Spin/>
-                            </div>
-                        )}
-                    </List>
-                </InfiniteScroll>
+                        <List
+                            dataSource={this.state.data}
+                            renderItem={item => (
+                                <List.Item key={item.id}>
+                                    {/*<List.Item.Meta*/}
+                                    {/*    // title={ <Statistic title="Start time"*/}
+                                    {/*    //                    value={moment(item.start_time).format("YYYY-MM-DD HH:mm:ss")} />}*/}
+                                    {/*    // description=*/}
+                                    {/*/>*/}
+                                    <div>
+                                        <Row gutter={32}>
+                                            <Col span={12}>
+                                                <Statistic title="Start time"
+                                                           value={moment(item.start_time).format("DD/MM/YYYY HH:mm:ss")}/>
+                                            </Col>
+                                            <Col span={6} offset={6}>
+                                                <Statistic title="Duration"
+                                                           value={moment(item.duration).format("HH:mm:ss")}/>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </List.Item>
+                            )}
+                        >
+                            {/*{this.state.loading && this.state.hasMore && (*/}
+                            {/*    <div style={loading_container}>*/}
+                            {/*        <Spin/>*/}
+                            {/*    </div>*/}
+                            {/*)}*/}
+                        </List>
+                    </InfiniteScroll>
+                </div>
+                <div style={{marginTop: 30}}>
+                    <Row>
+                        <Col span={8} offset={18}>
+                            <Button size={"large"} type={"primary"} onClick={this.fetchData}>Refresh</Button>
+                        </Col>
+                    </Row>
+                </div>
             </div>
         );
     }
 }
+
+export default withRouter(InfiniteListExample);

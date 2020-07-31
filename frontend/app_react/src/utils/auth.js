@@ -1,17 +1,17 @@
 export function getToken() {
-    return localStorage.getItem("token");
+    return localStorage.getItem('django_auth_token');
 }
 
 export function setToken(token) {
-    localStorage.setItem("token", token);
+    localStorage.setItem("django_auth_token", token);
 }
 
 export function clearToken() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("django_auth_token");
 }
 
 export function isLogined() {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("django_auth_token")) {
         return true;
     }
     return false;

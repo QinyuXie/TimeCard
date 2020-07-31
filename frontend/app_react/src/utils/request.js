@@ -11,7 +11,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
     function (config) {
         // Do something before request is sent
-        config.headers["authorization"] = "Bearer " + getToken();
+        config.headers["auth"] = getToken();
         config.headers['Access-Control-Allow-Origin'] = "*";
         return config;
     },
@@ -21,20 +21,24 @@ instance.interceptors.request.use(
     }
 );
 
-// Add a response interceptor
-//  请求返回之后执行
-instance.interceptors.response.use(
-    function (response) {
-        // Any status code that lie within the range of 2xx cause this function to trigger
-        // Do something with response data
-        return response.data;
-    },
-    function (error) {
-        // Any status codes that falls outside the range of 2xx cause this function to trigger
-        // Do something with response error
-        return Promise.reject(error);
-    }
-);
+// Alter defaults after instance has been created
+instance.defaults.headers.common['auth'] = getToken();
+
+//
+// // Add a response interceptor
+// //  请求返回之后执行
+// instance.interceptors.response.use(
+//     function (response) {
+//         // Any status code that lie within the range of 2xx cause this function to trigger
+//         // Do something with response data
+//         return response.data;
+//     },
+//     function (error) {
+//         // Any status codes that falls outside the range of 2xx cause this function to trigger
+//         // Do something with response error
+//         return Promise.reject(error);
+//     }
+// );
 
 /**
  * get请求
@@ -42,9 +46,7 @@ instance.interceptors.response.use(
  * @param {*} params  url参数
  */
 export function get(url, params) {
-    return instance.get(url, {
-        params,
-    });
+    return instance.get(url, {params});
 }
 
 /**
