@@ -12,7 +12,7 @@
     "babel": "^6.23.0",
     "less": "^3.12.2",
     "less-loader": "^6.2.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-infinite-scroller": "^1.2.4",
